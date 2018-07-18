@@ -1,0 +1,29 @@
+---
+title: "demo R markdown with Phython"
+author: "lewis mews"
+date: "12 July 2018"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default 
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(reticulate)
+use_virtualenv("r-reticulate")
+py_available(TRUE)
+```
+
+## The below code is an example of how Phython works in R Markdown.
+
+I would Recommended looking into the package `reticulate`. It has some nice properties which allow the use of phython in your R Markdown file.
+Connecting to SQL is similar, just change {python} for {sql} (you will need to set up your SQL connection in a prior chunk to connect to the database)
+
+```{python}
+x = 'hello, python world!'
+print(x.split(' '))
+```
+

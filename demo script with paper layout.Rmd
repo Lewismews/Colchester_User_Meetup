@@ -1,0 +1,102 @@
+---
+title: "R Markdown Demo"
+author: "Lewis Mews"
+date: "2 July 2018"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(gridExtra)
+data <- read.csv("Data/nfl.csv")
+
+```
+
+
+# Introduction
+
+This is a demo markdown created for the __Colchester R Users Group__ meetup. This Demo can be downloaded from `Gogs` using this link <http://obj-vs-efactory:3000/lmews/Colchester_R_Users_Group_Demo>. 
+
+
+In this R Markdown file I will
+
+1) Plot some of the data 
+2) Look at a basic linear model
+3) Get a summary of the results
+
+The Data used will be NFL data with the following variables
+
+* Division
+* Total Yards For and Against
+* Total Points For and Against
+* Wins
+
+# Methods
+
+<br>
+
+#### Step 1) 
+Firstly I looked at what data we have
+
+``` {r head_data, fig.align='center', fig.height=9}
+
+head(data)
+
+```
+
+<br>
+
+#### Step 2) 
+Next I plotted the data to get see if there was any interesting relationships
+
+``` {r initial_plot, fig.align='center', fig.height=9}
+
+p1 <- ggplot(data) + aes(x = Total.Yards.Offense, y = Wins) + geom_point() + ggtitle("Total Yards Offense") + theme(plot.title = element_text(hjust = 0.5))
+p2 <- ggplot(data) + aes(x = Total.Points.offense, y = Wins) + geom_point() + ggtitle("Total Points Offense") + theme(plot.title = element_text(hjust = 0.5))
+p3 <- ggplot(data) + aes(x = Total.Yards.Defense, y = Wins) + geom_point() + ggtitle("Total Yards Defense") + theme(plot.title = element_text(hjust = 0.5))
+p4 <- ggplot(data) + aes(x = Total.Points.Defense, y = Wins) + geom_point() + ggtitle("Total Points Defense") + theme(plot.title = element_text(hjust = 0.5))
+p5 <- ggplot(data) + aes(x = Total.Yards.Offense-Total.Yards.Defense, y = Wins) + geom_point() + ggtitle("Total Net Yards") + theme(plot.title = element_text(hjust = 0.5))
+p6 <- ggplot(data) + aes(x = Total.Points.offense-Total.Points.Defense, y = Wins) + geom_point() + ggtitle("Total Net Points") + theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2)
+
+```
+
+<br>
+
+#### Step 3) 
+I then created a simple linear model of wins against total defensive points and total offensive points 
+
+``` {r model, fig.align='center', fig.height=9}
+
+(model <- lm(Wins ~ Total.Points.offense + Total.Points.Defense, data=data))
+
+```
+
+# Results
+
+Here is a summary of the regression model:
+
+``` {r summarise_model}
+summary(model)
+
+```
+<br>
+Below shows a plot of fitted values vs actual values
+
+``` {r plot_model}
+plot(round(model$fitted.values), data$Wins)
+
+```
+
+# Conclusion
+
+so the final model is:
+
+$$E(Wins) = `r model$coefficients[1]` + `r model$coefficients[2]`*Total.Points.offense `r model$coefficients[3]`*Total.Points.Defense$$
+
+As can be seen, the model performs terribly. 
