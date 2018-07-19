@@ -1,0 +1,77 @@
+---
+title: "Warning/Error"
+author: "lewis mews"
+date: "19 July 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+## R Markdown
+
+This is a script to show the difference between:    
+* Warnings = `TRUE` and Warnings = `FALSE`      
+* Error = `TRUE` and Error = `FALSE`      
+* Fig.Width and Fig.Height      
+* Highlight = `TRUE` and Error = `FALSE`      
+
+##{.tabset}     
+### Warnings
+
+```{r cars, warning=FALSE}
+ggplot(mtcars, aes(wt,mpg)) +
+  geom_point() +
+  scale_x_continuous(limits=c(100,200))
+```
+
+```{r cars2, warning=TRUE}
+ggplot(mtcars, aes(wt,mpg)) +
+  geom_point() +
+  scale_x_continuous(limits=c(100,200))
+```
+
+###Error 
+(switch Error to FALSE and see the report fail to run)
+
+```{r aaa, error=TRUE}
+plot(aaa)
+```
+
+###Fig Width/height
+
+```{r fig}
+ggplot(mtcars, aes(wt,mpg)) +
+  geom_point() +
+  scale_x_continuous(limits=c(100,200))
+```
+
+```{r figwidth, fig.width=1}
+ggplot(mtcars, aes(wt,mpg)) +
+  geom_point() +
+  scale_x_continuous(limits=c(100,200))
+```
+
+```{r figheight, fig.height=1}
+ggplot(mtcars, aes(wt,mpg)) +
+  geom_point() +
+  scale_x_continuous(limits=c(100,200))
+```
+
+### Highlight
+
+```{r highlightfalse, highlight=FALSE}
+data <- "mtcars"
+ggplot(mtcars, aes(wt,mpg)) +
+  geom_point() +
+  scale_x_continuous(limits=c(100,200))
+```
+
+```{r highlighttrue, highlight=TRUE}
+data <- "mtcars"
+ggplot(mtcars, aes(wt,mpg)) +
+  geom_point() +
+  scale_x_continuous(limits=c(100,200))
+```
